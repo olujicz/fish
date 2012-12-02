@@ -1,40 +1,27 @@
 function fish_prompt --description 'Write out the prompt'
-	if not set -q __fish_prompt_hostname
-        set -g __fish_prompt_hostname (hostname|cut -d . -f 1)
-    end
-
-    if not set -q __fish_prompt_normal
-        set -g __fish_prompt_normal (set_color normal)
-    end
-
-    if not set -q __git_cb
-        set -x tmp_branch (git name-rev ^/dev/null --name-only HEAD)
-        if [ ! -z $tmp_branch ]
-            set __git_cb (set_color brown) $tmp_branch (set_color normal)
-        end
-    end
-
-    if not set -q __git_track
-        if [ ! -z $tmp_branch ]
-            set __git_track (set_color normal) ' tracking ' (set_color green) (git branch ^/dev/null -r | grep -- '->' | awk '{print $3}') (set_color normal)
-        end
-    end
-
-    if not set -q __git_cc
-        if [ ! -z $tmp_branch ]
-            set __git_cc (set_color normal) '(' (set_color yellow) (git rev-parse ^/dev/null --short HEAD) (set_color normal) ')'
-        end
-    end
-
-    if not set -q __fish_prompt_cwd
-        set -g __fish_prompt_cwd (set_color $fish_color_cwd)
-    end
+    set branch_line (git branch ^/dev/null -avv | grep '^*')
 
     printf '\n'
+    if [ ! -z $branch_line ];
+        set LOCAL (echo $branch_line | awk '{print $2}')
+        set REMOTE (echo $branch_line | grep -o '\[.*\]' | sed 's:\(\[\|\]\)::g' | cut -f 1 -d ':')
+        set BRANCH_DIFFERENCES (echo $branch_line | grep -o '\[.*\]' | sed 's:\(\[\|\]\)::g' | cut -f 2 -d ':')
 
-    if [ ! -z $tmp_branch ]
-        printf '%s%s%s' $__git_cb $__git_cc $__git_track
-        printf '\n'
+        set local_branch (set_color yellow)$LOCAL(set_color normal)
+        set local_branch_commit (set_color normal)'('(set_color yellow)(git log $LOCAL --oneline -n 1 | awk '{print $1}')')'(set_color normal)
+        set branch_differences (set_color red)$BRANCH_DIFFERENCES(set_color normal)
+        set remote_branch (set_color green)$REMOTE(set_color normal)
+        set remote_branch_commit (set_color normal)'('(set_color yellow)(git log $REMOTE --oneline -n 1 | awk '{print $1}')')'(set_color normal)
+
+        printf '%s%s' $local_branch $local_branch_commit
+        if [ $BRANCH_DIFFERENCES != $REMOTE ];
+            printf '%s' $branch_differences
+        end
+        printf ' %s%s\n' $remote_branch $remote_branch_commit
     end
-    printf '%s%s%s@%s%s %s%s%s > ' (set_color red) (whoami) (set_color normal) (set_color green) (hostname | cut -f 1 -d .) (set_color cyan) (pwd | sed "s:$HOME:~:g") (set_color normal)
+
+    set whoami (set_color red)(whoami)(set_color normal)
+    set hostname (set_color green)(hostname | cut -f 1 -d .)(set_color normal)
+    set pwd (set_color cyan)(pwd | sed "s:$HOME:~:g")(set_color normal)
+    printf '%s@%s %s > ' $whoami $hostname $pwd
 end
