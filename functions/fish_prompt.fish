@@ -8,10 +8,10 @@ function fish_prompt --description 'Write out the prompt'
         set BRANCH_DIFFERENCES (echo $branch_line | grep -o '\[.*\]' | sed 's:\(\[\|\]\)::g' | cut -f 2 -d ':')
 
         set local_branch (set_color yellow)$LOCAL(set_color normal)
-        set local_branch_commit (set_color normal)'('(set_color yellow)(git log $LOCAL --oneline -n 1 | awk '{print $1}')')'(set_color normal)
+        set local_branch_commit (set_color normal)'('(set_color yellow)(git log $LOCAL --oneline -n 1 | awk '{print $1}')(set_color normal)')'(set_color normal)
         set branch_differences (set_color red)$BRANCH_DIFFERENCES(set_color normal)
         set remote_branch (set_color green)$REMOTE(set_color normal)
-        set remote_branch_commit (set_color normal)'('(set_color yellow)(git log $REMOTE --oneline -n 1 | awk '{print $1}')')'(set_color normal)
+        set remote_branch_commit (set_color normal)'('(set_color yellow)(git log $REMOTE --oneline -n 1 | awk '{print $1}')(set_color normal)')'(set_color normal)
 
         printf '%s%s' $local_branch $local_branch_commit
         if [ $BRANCH_DIFFERENCES != $REMOTE ];
