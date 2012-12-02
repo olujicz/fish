@@ -1,5 +1,5 @@
 function fish_prompt --description 'Write out the prompt'
-    set branch_line (git branch ^/dev/null -avv | grep '^*')
+    set branch_line (git branch ^/dev/null -vv | grep '^*')
 
     printf '\n'
     if [ ! -z $branch_line ];
