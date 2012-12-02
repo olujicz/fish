@@ -17,7 +17,7 @@ function fish_prompt --description 'Write out the prompt'
         if [ $BRANCH_DIFFERENCES != $REMOTE ];
             printf '%s' $branch_differences
         end
-        if [ ! -z $REMOTE_BRANCH ];
+        if [ ! -z $REMOTE ];
             printf ' %s%s' $remote_branch $remote_branch_commit
         end
         printf '\n'
