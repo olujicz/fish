@@ -1,5 +1,5 @@
 function fish_prompt --description 'Write out the prompt'
-    set branch_line (git branch ^/dev/null -vv | grep '^*')
+	set branch_line (git branch ^/dev/null -vv | grep '^*')
 
     printf '\n'
     if [ ! -z $branch_line ];
@@ -17,7 +17,10 @@ function fish_prompt --description 'Write out the prompt'
         if [ $BRANCH_DIFFERENCES != $REMOTE ];
             printf '%s' $branch_differences
         end
-        printf ' %s%s\n' $remote_branch $remote_branch_commit
+        if [ ! -z $REMOTE_BRANCH ];
+            printf ' %s%s' $remote_branch $remote_branch_commit
+        end
+        printf '\n'
     end
 
     set whoami (set_color red)(whoami)(set_color normal)
