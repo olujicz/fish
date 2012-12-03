@@ -4,5 +4,3 @@ set -x CDPATH "."
 if [ $TERM == 'rxvt-unicode-256color' ];
     set -x TERM rxvt
 end
-
-bind \cr kill-word
