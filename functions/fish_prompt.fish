@@ -1,7 +1,7 @@
 function fish_prompt --description 'Write out the prompt'
 	set branch_line (git branch ^/dev/null -vv | grep '^*')
 
-    printf '\n'
+    printf ' \n'
     if [ ! -z $branch_line ];
         set LOCAL (echo $branch_line | awk '{print $2}')
         set REMOTE (echo $branch_line | grep -o '\[.*\]' | sed 's:\(\[\|\]\)::g' | cut -f 1 -d ':')
