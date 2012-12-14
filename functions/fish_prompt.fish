@@ -26,5 +26,5 @@ function fish_prompt --description 'Write out the prompt'
     set whoami (set_color red)(whoami)(set_color normal)
     set hostname (set_color green)(hostname | cut -f 1 -d .)(set_color normal)
     set pwd (set_color cyan)(pwd | sed "s:^$HOME:~:g")(set_color normal)
-    printf '%s@%s %s > ' $whoami $hostname $pwd
+    printf '%s\n%s@%s > ' $pwd $whoami $hostname
 end
