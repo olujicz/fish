@@ -4,8 +4,8 @@ function fish_prompt --description 'Write out the prompt'
     printf ' \n'
     if [ ! -z $branch_line ];
         set LOCAL (echo $branch_line | awk '{print $2}')
-        set REMOTE (echo $branch_line | grep -o '\[.*\]' | sed 's:\(\[\|\]\)::g' | cut -f 1 -d ':')
-        set BRANCH_DIFFERENCES (echo $branch_line | grep -o '\[.*\]' | sed 's:\(\[\|\]\)::g' | cut -f 2 -d ':')
+        set REMOTE (echo $branch_line | grep -o '\[.*\]' | awk -F '[' '{print $2}' | awk -F ']' '{print $1}' | cut -f 1 -d ':')
+        set BRANCH_DIFFERENCES (echo $branch_line | grep -o '\[.*\]' | awk -F '[' '{print $2}' | awk -F ']' '{print $1}' | cut -f 2 -d ':')
 
         set local_branch (set_color yellow)$LOCAL(set_color normal)
         set local_branch_commit (set_color normal)'('(set_color yellow)(git log $LOCAL --oneline -n 1 | awk '{print $1}')(set_color normal)')'(set_color normal)
