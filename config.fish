@@ -10,4 +10,6 @@ if [ $TERM == 'rxvt' ]
     if [ -e $dircolors_file ]
         eval (dircolors -c $dircolors_file)
     end
+else
+    set LS_COLORS ''
 end
